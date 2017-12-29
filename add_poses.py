@@ -330,27 +330,6 @@ def move_group_python_interface_tutorial():
   print robot.get_current_state()
   print "============"
 
-
-  ## Let's set a joint space goal and move towards it. 
-  ## First, we will clear the pose target we had just set.
-
-  group.clear_pose_targets()
-
-  ## Then, we will get the current set of joint values for the group
-  group_variable_values = group.get_current_joint_values()
-  print "============ Joint values: ", group_variable_values
-
-  init_pos  =[-0.09033645457121242, -2.0616807699840276, -2.1038878996181536, -2.116712872974965, -1.655165653415061, 0.788790454087411]
-  #init_pos  =[0.2091,               -2.3496,              -2.1545,            -1.7428,            -1.4132,            0.4215]
-  group.set_joint_value_target(init_pos)
-
-  plan2 = group.plan()
-
-  print "============ Waiting while RVIZ displays init plan..."
-  rospy.sleep(5)
-  group.go(wait=True)
-  rospy.sleep(5)
-
   ## Planning to a Pose goal
 
   ## Let's set a joint space goal and move towards it. 
@@ -395,8 +374,8 @@ def move_group_python_interface_tutorial():
   group.go(wait=True)
   rospy.sleep(5)
 
-  group_variable_values = group.get_current_joint_values()
-  print "============ Joint new init values: ", group_variable_values
+  #group_variable_values = group.get_current_joint_values()
+  #print "============ Joint new init values: ", group_variable_values
 
 
 
@@ -414,10 +393,10 @@ def move_group_python_interface_tutorial():
   print group.get_current_pose().pose
   pose_target = geometry_msgs.msg.Pose()
   pose_target = group.get_current_pose().pose
-  #pose_target.position.x -= 0.2
+  pose_target.position.x -= 0.2
   #pose_target.position.y += 0.2
   #pose_target.position.z -= 0.2
-  pose_target.orientation = quaternion.INIT
+  pose_target.orientation = quaternion.ROLL
   group.set_pose_target(pose_target)
 
   ## Now, we call the planner to compute the plan
@@ -442,7 +421,7 @@ def move_group_python_interface_tutorial():
 
   print "============ Waiting while pose plan is visualized (again)..."
   rospy.sleep(5)
-  group.go(wait=True)
+  #group.go(wait=True)
   rospy.sleep(5)
 
 
