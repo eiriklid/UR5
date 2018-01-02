@@ -394,9 +394,9 @@ def move_group_python_interface_tutorial():
   pose_target = geometry_msgs.msg.Pose()
   pose_target = group.get_current_pose().pose
   pose_target.position.x -= 0.2
-  #pose_target.position.y += 0.2
-  #pose_target.position.z -= 0.2
-  pose_target.orientation = quaternion.ROLL
+  pose_target.position.y += 0.2
+  pose_target.position.z -= 0.2
+  pose_target.orientation = quaternion.PITCH
   group.set_pose_target(pose_target)
 
   ## Now, we call the planner to compute the plan
@@ -421,11 +421,34 @@ def move_group_python_interface_tutorial():
 
   print "============ Waiting while pose plan is visualized (again)..."
   rospy.sleep(5)
-  #group.go(wait=True)
+  group.go(wait=True)
   rospy.sleep(5)
 
+  third_rotation = False
+  if third_rotation:
+    ## Let's set a joint space goal and move towards it. 
+    ## First, we will clear the pose target we had just set.
 
-  print group.get_current_pose().pose
+    group.clear_pose_targets()
+
+    ## Then, we will get the current set of joint values for the group
+    group_variable_values = group.get_current_joint_values()
+    print "============ Joint values: ", group_variable_values
+    #third_pos  =[-0.1704554785657173, -2.8608965721242923, -1.7926042218610574, -0.06615168723964078, -1.5714521033691993, 0.9551251800947375]
+    third_pos  =[-0.38032329541571563, -3.1200978374881685, -0.796707890558565, -0.8171705608742679, -1.5726911883348942, 1.1641783708641786]
+
+    group.set_joint_value_target(third_pos)
+
+    plan2 = group.plan()
+
+    print "============ Waiting while RVIZ displays init plan..."
+    #rospy.sleep(3)
+    group.go(wait=True)
+    rospy.sleep(5)
+
+  group_variable_values = group.get_current_joint_values()
+  print "============ Joint values: ", group_variable_values
+
   ## When finished shut down moveit_commander.
   moveit_commander.roscpp_shutdown()
 

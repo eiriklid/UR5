@@ -13,10 +13,10 @@ if __name__ == '__main__':
     listener = tf.TransformListener()
 
 
-    with open('testrun.csv','w') as logFile:
+    with open('csv/run16_std8.csv','w') as logFile:
     	logFileWriter = csv.writer(logFile)
     	logFileWriter.writerow(['time_ns','x','y','z','q_x','q_y','q_z','q_w'])
-    	rate = rospy.Rate(125.0) 
+    	rate = rospy.Rate(100.0) 
     	#rate = rospy.Rate(10.0)
     	print "====== TIME ====="
     	print rospy.Time.now()
